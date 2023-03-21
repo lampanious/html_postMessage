@@ -1,0 +1,43 @@
+<html>
+    <body>
+        <h1>Main page</h1>
+        <div>
+            <button type="button" onClick="loadModal()">Open modal page</button>
+        </div>
+        <div style="margin-top: 5px;"><span id="modalClose"></span></div>
+        <div id="modalHtml">
+        </div>
+    </body>
+</html>
+
+<iframe id="modalField" style="display: none; width: 100%; margin-top: 10px;" src="/Users/lplampanious/Desktop/untitled folder/modal.html"></iframe>
+
+<script>
+    const iframe = document.getElementById("modalField");
+    const modalCloseText = document.getElementById("modalClose");
+    let iWindow = null;
+    function loadModal(){
+        document.getElementById('modalClose').style.display = "none";
+        document.getElementById('modalField').style.display = "block";
+        if (iWindow === null) {
+          return;
+        }
+        iWindow.postMessage("Hello from the main page",'*');
+    }
+
+    function closeModal(){
+        document.getElementById('modalField').style.display = "none";
+    }
+    
+    iframe.addEventListener("load", () => {
+        iWindow = iframe.contentWindow;
+    });
+
+    window.addEventListener("message", (event) => {
+        document.getElementById('modalField').style.display = "none";
+        document.getElementById('modalClose').style.display = "block";
+        modalCloseText.textContent = event.data;
+    });
+        
+    
+</script>

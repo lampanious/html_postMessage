@@ -1,0 +1,27 @@
+
+<html>
+    <body style="background-color: aqua;">
+        <h2 style="text-align: center;">Modal page</h2>
+        <div>
+            <div>Content from main page: <span id="contentFromMain"></span></div>
+            <button type="button" onClick="closeModal()" style="margin-top: 5px;">Close modal page</button>
+        </div>
+    </body>
+</html>
+
+<script>
+    const output = document.getElementById("contentFromMain");
+    let parent = null;
+    window.addEventListener("message", ({ data, source }) => {
+        if (parent === null) {
+          parent = source;
+        }
+        output.textContent = JSON.stringify(data);
+    });
+    function closeModal(){
+        if (parent === null) {
+          return;
+        }
+        parent.postMessage("Modal closed!","*");
+    }
+</script>
